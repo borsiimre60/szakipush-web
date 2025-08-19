@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <title>SzakiPush Web</title>
+    <meta charset="UTF-8">
+    <title>SzakiPush Web</title>
+    <!-- OneSignal SDK beillesztése -->
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    <script>
+      window.OneSignal = window.OneSignal || [];
+      OneSignal.push(function() {
+        OneSignal.init({
+          appId: "Ios_v2_app_zmi4wg6p4jhsrhnao5l7n3c4hdz26c5ons5umhm3gqikonmjrwz5sobg4d3kz7sio66qs5kire3jnxymqlrwtxo6tyts6vzapg6iiri", // <-- CSERÉLD KI!
+        });
+      });
+    </script>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 32px; }
+      h1 { color: #333366; }
+    </style>
 </head>
 <body>
-  <h1>SzakiPush – Webes push engedélyező oldal</h1>
-  <p>Itt fogod tudni engedélyezni a push értesítéseket.</p>
+    <h1>SzakiPush – Webes push engedélyező oldal</h1>
+    <p>Itt fogod tudni engedélyezni a push értesítéseket.</p>
+    <p><b>Kattints az engedélyezéshez a böngésző felugró ablakában!</b></p>
 </body>
 </html>
