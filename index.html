@@ -1,92 +1,28 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-  <meta charset="UTF-8">
-  <title>SzakiPush – Webes push engedélyező oldal</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "c127d0ff-5694-4a44-8ef5-7fc5446b8f17", // <-- saját appId
-      });
+<p>
+  <b>Fontos!</b> Ha engedélyezed az értesítéseket, a munkákat automatikusan itt fogod megkapni. 
+  <br>
+  Az <b>engedélyezés után egy űrlap</b> nyílik meg, amit tölts ki – így tudjuk a megbízásokat hozzád eljuttatni!
+</p>
+<button id="enable-notifications-btn" style="font-size:1.1em;padding:0.5em 1em;">
+  Értesítések engedélyezése & munkák fogadása
+</button>
 
-      // Engedély után lekérjük a Player ID-t és eltároljuk
-      window.playerId = null;
-      OneSignal.on('subscriptionChange', async function(isSubscribed) {
-        if (isSubscribed) {
-          const userId = await OneSignal.getUserId();
-          document.getElementById('player_id').value = userId || "";
-          document.getElementById('pid_info').innerText = userId ? "Azonosítód (Player ID): " + userId : "";
-          window.playerId = userId;
-        } else {
-          document.getElementById('player_id').value = "";
-          document.getElementById('pid_info').innerText = "Nem engedélyezted a push-t!";
-          window.playerId = null;
-        }
-      });
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "c127d0ff-5694-4a44-8ef5-7fc5446b8f17",
     });
-  </script>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f8f6ff; color: #222; margin: 0; padding: 0; }
-    .container { max-width: 480px; margin: 30px auto; padding: 2em 2em 1.2em 2em; background: #fff; border-radius: 12px; box-shadow: 0 3px 16px #8883; }
-    h1 { color: #372e7a; }
-    .form-group { margin-bottom: 1.2em; }
-    label { display: block; margin-bottom: 0.4em; }
-    input, select, textarea { width: 100%; padding: 0.5em; border: 1px solid #bbb; border-radius: 5px; font-size: 1em; }
-    .info { margin: 1em 0; font-size: 1em; color: #263689; background: #eef; border-radius: 6px; padding: 0.8em; }
-    .btn { background: #372e7a; color: #fff; border: none; border-radius: 5px; padding: 0.7em 1.2em; cursor: pointer; font-size: 1em; }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .success { background: #d4ffd6; color: #225; padding: 1em; margin-top: 1em; border-radius: 8px; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>SzakiPush – Webes push engedélyező oldal</h1>
-    <div class="info">
-      <b>Kattints az engedélyezéshez a böngésző felugró ablakában!</b>
-      <div id="pid_info" style="margin-top:10px;color:#356;"></div>
-    </div>
 
-    <!-- Itt egy egyszerű Google űrlap helyett saját űrlap, de ha szeretnéd, iframe-ben is ágyazható a Google Form -->
-    <form id="szakiForm" target="_blank"
-          action="https://docs.google.com/forms/d/e/1FAIpQLSd3VNL2UmEY4PzE0ozgYi5RuvA5Dq6YvMs_xxxURLXXX/formResponse" method="POST">
-      <div class="form-group">
-        <label for="name">Név:</label>
-        <input type="text" id="name" name="entry.1234567890" required>
-      </div>
-      <div class="form-group">
-        <label for="phone">Telefonszám:</label>
-        <input type="tel" id="phone" name="entry.0987654321" required>
-      </div>
-      <div class="form-group">
-        <label for="profession">Szakma:</label>
-        <input type="text" id="profession" name="entry.1122334455" required>
-      </div>
-      <!-- Player ID (rejtett mező) -->
-      <input type="hidden" id="player_id" name="entry.6677889900" value="">
-      <button type="submit" class="btn" id="submitBtn" disabled>Regisztráció elküldése</button>
-    </form>
-    <div id="success" class="success" style="display:none"></div>
-  </div>
+    document.getElementById('enable-notifications-btn').onclick = function() {
+      OneSignal.Notifications.requestPermission();
+    };
 
-  <script>
-    // Csak akkor legyen aktív a gomb, ha van player ID
-    const pidField = document.getElementById('player_id');
-    const submitBtn = document.getElementById('submitBtn');
-    setInterval(() => {
-      submitBtn.disabled = !pidField.value;
-    }, 300);
-
-    // Elküldés után kiír egy üzenetet (marad oldalon)
-    document.getElementById('szakiForm').addEventListener('submit', function(e) {
-      setTimeout(function() {
-        document.getElementById('success').style.display = 'block';
-        document.getElementById('success').innerHTML = "Köszönjük, regisztrációd rögzítettük! Push üzeneteket is fogsz kapni.";
-      }, 1000);
+    OneSignal.Notifications.on('permissionChange', async function(state) {
+      if (state.to === 'granted') {
+        window.open("https://docs.google.com/forms/d/e/1FAIpQLSfwmK4o09-j7fxWj_gqVe7tf1Z1grngHYUfsA0N2FECY5oljA/viewform", "_blank");
+      }
     });
-  </script>
-</body>
-</html>
-
+  });
+</script>
