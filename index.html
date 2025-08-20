@@ -1,26 +1,70 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <meta charset="UTF-8">
-    <title>SzakiPush Web</title>
-    <!-- OneSignal SDK beillesztése -->
-    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-    <script>
-      window.OneSignal = window.OneSignal || [];
-      OneSignal.push(function() {
-        OneSignal.init({
-          appId: "Ios_v2_app_zmi4wg6p4jhsrhnao5l7n3c4hdz26c5ons5umhm3gqikonmjrwz5sobg4d3kz7sio66qs5kire3jnxymqlrwtxo6tyts6vzapg6iiri", // <-- CSERÉLD KI!
-        });
-      });
-    </script>
-    <style>
-      body { font-family: Arial, sans-serif; margin: 32px; }
-      h1 { color: #333366; }
-    </style>
+  <meta charset="UTF-8">
+  <title>SzakiPush – Webes push engedélyező oldal</title>
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+  <style>
+    body { font-family: sans-serif; margin: 2em; }
+    #result { margin-top: 2em; font-weight: bold; color: green; }
+    #error { margin-top: 2em; font-weight: bold; color: red; }
+  </style>
 </head>
 <body>
-    <h1>SzakiPush – Webes push engedélyező oldal</h1>
-    <p>Itt fogod tudni engedélyezni a push értesítéseket.</p>
-    <p><b>Kattints az engedélyezéshez a böngésző felugró ablakában!</b></p>
+  <h1>SzakiPush – Webes push engedélyező oldal</h1>
+  <p>Itt fogod tudni engedélyezni a push értesítéseket.</p>
+  <p><b>Kattints az engedélyezéshez a böngésző felugró ablakában!</b></p>
+  <div id="result"></div>
+  <div id="error"></div>
+
+  <script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "!!!IDE ÍRD A SAJÁT ONESIGNAL APP ID-t!!!", // <-- Pl. "8a7e8d1a-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        notifyButton: { enable: true }
+      });
+
+      OneSignal.showNativePrompt(); // automatikusan feldobja az engedélykérőt
+
+      OneSignal.on('subscriptionChange', function(isSubscribed) {
+        if (isSubscribed) {
+          OneSignal.getUserId().then(function(playerId) {
+            document.getElementById('result').textContent = "Sikeres push regisztráció! Azonosító (Player ID): " + playerId;
+
+            // ITT KÜLDI BE A PLAYER ID-T GOOGLE ŰRLAPRA! (PÉLDA)
+            // 1. Nyisd meg a Google űrlapot, "Jelentkezés", ott hozz létre egy "Player ID" rövid válaszkérdést
+            // 2. Kattints a három pontra > "Űrlap linkjének másolása"
+            // 3. Nézd meg az űrlap azonosítóját és a kérdés 'entry.XXXXXX' mezőjét (pl. entry.12345678)
+            // 4. Cseréld le az alábbi két sort a SAJÁTODRA!
+
+            var googleFormUrl = "https://docs.google.com/forms/d/e/!!!SAJÁT-ŰRLAP-ID!!!/formResponse";
+            var field = "entry.!!!MEZŐ-ID!!!"; // pl. entry.12345678
+
+            var data = {};
+            data[field] = playerId;
+
+            // Űrlap POST küldés (háttérben, felhasználónak nem jelenik meg semmi)
+            var params = Object.keys(data).map(
+              key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])
+            ).join('&');
+
+            fetch(googleFormUrl, {
+              method: "POST",
+              mode: "no-cors",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: params
+            });
+
+            // Visszajelzés a felhasználónak
+            document.getElementById('result').textContent += "\nAz azonosító automatikusan beküldve!";
+          });
+        } else {
+          document.getElementById('error').textContent = "Nem sikerült feliratkozni push értesítésre!";
+        }
+      });
+    });
+  </script>
 </body>
 </html>
+
