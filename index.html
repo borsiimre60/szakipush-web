@@ -2,125 +2,146 @@
 <html lang="hu">
 <head>
   <meta charset="UTF-8">
-  <title>SzakiPush – Webes push engedélyező oldal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+  <title>SzakiPush – Webes push engedélyező oldal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;500&display=swap" rel="stylesheet">
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <style>
     body {
-      background: #f7f5ff;
+      background: #f6f3ff;
       font-family: 'Montserrat', Arial, sans-serif;
-      margin: 0;
-      min-height: 100vh;
     }
-    .centerbox {
-      max-width: 440px;
-      margin: 6vw auto;
+    .container {
+      max-width: 480px;
+      margin: 54px auto;
       background: #fff;
-      border-radius: 22px;
-      box-shadow: 0 8px 38px 0 rgba(59,41,97,0.09);
-      padding: 36px 32px 32px 32px;
+      border-radius: 24px;
+      box-shadow: 0 8px 36px #4f24af14;
+      padding: 32px 28px 28px 28px;
       text-align: center;
+      position: relative;
+      animation: fadein 0.7s;
+    }
+    @keyframes fadein {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: none;}
     }
     h1 {
-      color: #3f2c7d;
-      font-size: 2.2rem;
-      margin: 0 0 16px 0;
+      font-size: 2.1rem;
       font-weight: 700;
-      letter-spacing: -.5px;
-      line-height: 1.15;
-    }
-    .highlight {
-      background: #ece8fc;
-      color: #3f2c7d;
-      border-radius: 10px;
-      padding: 16px 16px 12px 16px;
-      margin-bottom: 20px;
-      font-size: 1.08rem;
-      font-weight: 500;
-      line-height: 1.6;
-    }
-    .highlight strong {
-      color: #7b1fa2;
-    }
-    .info {
-      color: #2c2154;
-      font-size: 1.08rem;
-      font-weight: 500;
-      margin-bottom: 30px;
-    }
-    .main-btn {
-      font-family: inherit;
-      font-size: 1.2rem;
-      background: linear-gradient(90deg, #7b1fa2 70%, #1976d2 100%);
-      color: #fff;
-      border: none;
-      padding: 18px 40px;
-      border-radius: 12px;
-      margin: 8px 0 0 0;
-      box-shadow: 0 2px 18px rgba(123,31,162,0.13);
-      cursor: pointer;
-      font-weight: 700;
-      letter-spacing: .2px;
-      transition: background .22s, box-shadow .22s;
-      display: inline-flex;
+      color: #431385;
+      margin-bottom: 18px;
+      letter-spacing: -1px;
+      display: flex;
       align-items: center;
+      justify-content: center;
       gap: 13px;
     }
-    .main-btn:hover {
-      background: linear-gradient(90deg, #1976d2 60%, #7b1fa2 100%);
-      box-shadow: 0 6px 28px rgba(123,31,162,0.17);
+    .emoji {
+      font-size: 2.1rem;
+      margin-right: 6px;
     }
-    .icon {
+    .info-box {
+      background: #ece7fc;
+      color: #391d66;
+      border-radius: 14px;
+      padding: 14px 16px 14px 16px;
+      margin-bottom: 16px;
+      font-size: 1.07rem;
+      text-align: center;
+      font-weight: 500;
+      line-height: 1.44;
+      border-left: 5px solid #a87cff;
+    }
+    .info-box b, .info-box strong {
+      color: #7b38d8;
+      font-weight: 700;
+    }
+    .main-btn {
+      margin-top: 24px;
+      font-size: 1.15rem;
+      background: linear-gradient(90deg,#8726e7,#365cd8 70%);
+      color: #fff;
+      border: none;
+      padding: 15px 28px;
+      border-radius: 12px;
+      font-weight: 700;
+      box-shadow: 0 2px 12px #9c59ef25;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.16s, box-shadow 0.18s, transform 0.18s;
+      gap: 12px;
+    }
+    .main-btn:active {
+      transform: scale(0.97);
+      box-shadow: 0 2px 10px #8656e425;
+    }
+    .main-btn .icon {
       font-size: 1.5em;
-      vertical-align: middle;
-      display: inline-block;
     }
-    .msg {
-      color: #6d36b8;
-      background: #ede6f9;
+    .thanks {
+      margin-top: 24px;
+      font-size: 1.13rem;
+      color: #391d66;
+      font-weight: 600;
+      background: #e0ffed;
       border-radius: 10px;
-      margin-top: 25px;
-      font-size: 1.08rem;
-      padding: 15px 8px;
+      padding: 10px 16px;
       display: none;
+      animation: fadein 0.7s;
     }
-    @media (max-width: 600px) {
-      .centerbox {
-        max-width: 97vw;
-        padding: 18px 4vw 26px 4vw;
-      }
-      h1 { font-size: 1.38rem; }
-      .highlight, .info, .msg { font-size: 0.99rem; }
-      .main-btn { font-size: 1rem; padding: 13px 19px; }
+    .next-btn {
+      display: none;
+      margin-top: 18px;
+      font-size: 1.08rem;
+      background: linear-gradient(90deg,#4cafff,#807fff 80%);
+      color: #fff;
+      border: none;
+      padding: 13px 23px;
+      border-radius: 9px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 10px #9bb4ff2e;
+      transition: background 0.15s, transform 0.14s;
+      gap: 10px;
+    }
+    .next-btn:active {
+      transform: scale(0.97);
+    }
+    .notice {
+      margin-top: 22px;
+      font-size: 1rem;
+      color: #443b5e;
+      line-height: 1.6;
+      font-weight: 500;
     }
   </style>
 </head>
 <body>
-  <div class="centerbox">
-    <h1>
-      <span class="icon">🔔</span>
-      SzakiPush – Webes push engedélyező oldal
-    </h1>
-    <div class="highlight">
+  <div class="container">
+    <h1><span class="emoji">🔔</span> SzakiPush – Webes push engedélyező oldal</h1>
+    <div class="info-box">
       <b>Kattints az engedélyezéshez a böngésző felugró ablakában!</b><br><br>
-      <strong>Figyelem:</strong> A munkát ezután <b>push értesítésben</b> fogod kapni.<br>
+      <b>Figyelem:</b> A munkát ezután <b>push értesítésben</b> fogod kapni.<br>
       Ha engedélyezed a push üzeneteket, a következő lépésben a regisztrációs űrlap automatikusan megnyílik!
     </div>
-    <div class="info">
+    <div class="notice">
       A regisztrációhoz először engedélyezd a push üzeneteket,<br>
       majd töltsd ki a megnyíló Google űrlapot!
     </div>
-    <button class="main-btn" onclick="enablePushAndOpenForm()">
-      <span class="icon">✅</span>
-      Engedélyezem és regisztrálok
+    <button class="main-btn" id="pushBtn" onclick="enablePushAndOpenForm()">
+      <span class="icon">✅</span> Engedélyezem és regisztrálok
     </button>
-    <div class="msg" id="doneMsg">
-      Köszönjük! Az értesítések engedélyezve, a jelentkezési űrlap megnyílt.<br>
-      Ha bezárod, ezt az oldalt frissítheted újra.
+    <div class="thanks" id="doneMsg">
+      Köszönjük, az értesítés engedélyezve!<br>
+      <span style="font-weight:400">Tovább a regisztrációhoz:</span>
     </div>
+    <button class="next-btn" id="nextBtn" onclick="goToForm()">
+      <span class="icon">📝</span> Google űrlap kitöltése
+    </button>
   </div>
-
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
     function enablePushAndOpenForm() {
       window.OneSignalDeferred = window.OneSignalDeferred || [];
@@ -129,8 +150,9 @@
         OneSignal.showSlidedownPrompt().then(function() {
           OneSignal.isPushNotificationsEnabled(function(isEnabled) {
             if (isEnabled) {
-              window.open('https://docs.google.com/forms/d/e/1FAIpQLSfwmK4o09-j7fxWj_gqVe7tf1Z1grngHYUfsA0N2FECY5oljA/viewform', '_blank');
               document.getElementById('doneMsg').style.display = 'block';
+              document.getElementById('nextBtn').style.display = 'inline-flex';
+              document.getElementById('pushBtn').style.display = 'none';
             } else {
               alert("Az értesítést nem engedélyezted – frissítsd az oldalt, ha újra próbálod.");
             }
@@ -138,6 +160,10 @@
         });
       });
     }
+    function goToForm() {
+      window.open('https://docs.google.com/forms/d/e/1FAIpQLSfwmK4o09-j7fxWj_gqVe7tf1Z1grngHYUfsA0N2FECY5oljA/viewform', '_blank');
+    }
   </script>
 </body>
 </html>
+
