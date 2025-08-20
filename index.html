@@ -2,54 +2,137 @@
 <html lang="hu">
 <head>
   <meta charset="UTF-8">
-  <title>Push értesítés + Regisztráció</title>
+  <title>SzakiPush – Webes push engedélyező oldal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- OneSignal SDK -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <style>
-    body { font-family: sans-serif; background: #fafafa; text-align: center; padding-top: 60px; }
-    .btn {
-      background: #1976d2;
-      color: #fff;
-      font-size: 20px;
-      border: none;
-      padding: 18px 36px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-bottom: 24px;
+    body {
+      background: #f7f5ff;
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
     }
-    .btn:hover { background: #0d47a1; }
-    .hidden { display: none; }
-    .msg { font-size: 20px; color: #1976d2; margin-top: 32px; }
+    .centerbox {
+      max-width: 440px;
+      margin: 6vw auto;
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 8px 38px 0 rgba(59,41,97,0.09);
+      padding: 36px 32px 32px 32px;
+      text-align: center;
+    }
+    h1 {
+      color: #3f2c7d;
+      font-size: 2.2rem;
+      margin: 0 0 16px 0;
+      font-weight: 700;
+      letter-spacing: -.5px;
+      line-height: 1.15;
+    }
+    .highlight {
+      background: #ece8fc;
+      color: #3f2c7d;
+      border-radius: 10px;
+      padding: 16px 16px 12px 16px;
+      margin-bottom: 20px;
+      font-size: 1.08rem;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+    .highlight strong {
+      color: #7b1fa2;
+    }
+    .info {
+      color: #2c2154;
+      font-size: 1.08rem;
+      font-weight: 500;
+      margin-bottom: 30px;
+    }
+    .main-btn {
+      font-family: inherit;
+      font-size: 1.2rem;
+      background: linear-gradient(90deg, #7b1fa2 70%, #1976d2 100%);
+      color: #fff;
+      border: none;
+      padding: 18px 40px;
+      border-radius: 12px;
+      margin: 8px 0 0 0;
+      box-shadow: 0 2px 18px rgba(123,31,162,0.13);
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: .2px;
+      transition: background .22s, box-shadow .22s;
+      display: inline-flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .main-btn:hover {
+      background: linear-gradient(90deg, #1976d2 60%, #7b1fa2 100%);
+      box-shadow: 0 6px 28px rgba(123,31,162,0.17);
+    }
+    .icon {
+      font-size: 1.5em;
+      vertical-align: middle;
+      display: inline-block;
+    }
+    .msg {
+      color: #6d36b8;
+      background: #ede6f9;
+      border-radius: 10px;
+      margin-top: 25px;
+      font-size: 1.08rem;
+      padding: 15px 8px;
+      display: none;
+    }
+    @media (max-width: 600px) {
+      .centerbox {
+        max-width: 97vw;
+        padding: 18px 4vw 26px 4vw;
+      }
+      h1 { font-size: 1.38rem; }
+      .highlight, .info, .msg { font-size: 0.99rem; }
+      .main-btn { font-size: 1rem; padding: 13px 19px; }
+    }
   </style>
 </head>
 <body>
-  <h1>Regisztráció új munkákhoz</h1>
-  <p style="max-width:500px;margin:0 auto 36px;">
-    Kérjük, engedélyezd a böngésződben az értesítéseket.<br>
-    <b>Az új munkákat csak így tudod megkapni!</b><br>
-    Ha engedélyezted, automatikusan megnyílik a jelentkezési űrlap.<br>
-    <span style="color: #444;font-size:15px;">(Ezt csak egyszer kell megtenned.)</span>
-  </p>
-  <button class="btn" onclick="enablePushAndOpenForm()">Engedélyezem az értesítéseket és regisztrálok</button>
-  <div class="msg hidden" id="doneMsg">Köszönjük! Az űrlap megnyílt.<br>Ha bezárod, a lap frissítésével újraindíthatod a folyamatot.</div>
+  <div class="centerbox">
+    <h1>
+      <span class="icon">🔔</span>
+      SzakiPush – Webes push engedélyező oldal
+    </h1>
+    <div class="highlight">
+      <b>Kattints az engedélyezéshez a böngésző felugró ablakában!</b><br><br>
+      <strong>Figyelem:</strong> A munkát ezután <b>push értesítésben</b> fogod kapni.<br>
+      Ha engedélyezed a push üzeneteket, a következő lépésben a regisztrációs űrlap automatikusan megnyílik!
+    </div>
+    <div class="info">
+      A regisztrációhoz először engedélyezd a push üzeneteket,<br>
+      majd töltsd ki a megnyíló Google űrlapot!
+    </div>
+    <button class="main-btn" onclick="enablePushAndOpenForm()">
+      <span class="icon">✅</span>
+      Engedélyezem és regisztrálok
+    </button>
+    <div class="msg" id="doneMsg">
+      Köszönjük! Az értesítések engedélyezve, a jelentkezési űrlap megnyílt.<br>
+      Ha bezárod, ezt az oldalt frissítheted újra.
+    </div>
+  </div>
 
   <script>
     function enablePushAndOpenForm() {
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
-          appId: "c127d0ff-5694-4a44-8ef5-7fc5446b8f17",
-        });
-        // Értesítési engedélykérés
+        await OneSignal.init({ appId: "c127d0ff-5694-4a44-8ef5-7fc5446b8f17" });
         OneSignal.showSlidedownPrompt().then(function() {
           OneSignal.isPushNotificationsEnabled(function(isEnabled) {
             if (isEnabled) {
               window.open('https://docs.google.com/forms/d/e/1FAIpQLSfwmK4o09-j7fxWj_gqVe7tf1Z1grngHYUfsA0N2FECY5oljA/viewform', '_blank');
-              document.getElementById('doneMsg').classList.remove('hidden');
+              document.getElementById('doneMsg').style.display = 'block';
             } else {
-              alert("Az értesítést nem engedélyezted – ezt később bármikor megteheted az oldal frissítésével.");
+              alert("Az értesítést nem engedélyezted – frissítsd az oldalt, ha újra próbálod.");
             }
           });
         });
